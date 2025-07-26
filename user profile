@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gabby's Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-bg iframe {
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      width: 300px;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      color: #fff;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 26px;
+    }
+
+    p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .discord-id {
+      font-size: 13px;
+      margin-top: 10px;
+      background: rgba(255,255,255,0.2);
+      padding: 5px 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .socials a {
+      margin: 0 10px;
+      font-size: 20px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .socials a:hover {
+      transform: scale(1.2);
+    }
+
+    .btn {
+      display: inline-block;
+      background: #fff;
+      color: #ff7096;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      margin-top: 20px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffd6e0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background YouTube video -->
+  <div class="video-bg">
+    <iframe src="https://www.youtube.com/embed/XALhH3roawA?autoplay=1&mute=1&controls=0&loop=1&playlist=XALhH3roawA&modestbranding=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen"></iframe>
+  </div>
+  <div class="overlay"></div>
+
+  <!-- Profile Card -->
+  <div class="card">
+    <img class="avatar" src="https://i.imgur.com/nv1J52Y.png" alt="Gabby">
+    <h1>Gabby 🌸</h1>
+    <p>Comic Lover | Gamer | Full Stack Learner</p>
+    <p
