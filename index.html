@@ -71,31 +71,13 @@
       color: #000;
       box-shadow: 0 0 10px #0ff;
     }
-    .play-btn {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 25px;
-      background: #0ff;
-      color: #000;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 0 10px #0ff;
-    }
   </style>
 </head>
 <body>
 
-  <!-- 🔊 Play Sound Button -->
-  <button class="play-btn" onclick="enableAudio()">🔊 Play Audio</button>
-
-  <!-- 🎥 MP4 Video Background -->
-  <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
-    <source src="your-hosted-video.mp4" type="video/mp4" />
+  <!-- 🎥 Video Background -->
+  <video id="bgVideo" class="video-bg" autoplay loop playsinline>
+    <source src="https://cdn.pixabay.com/video/2024/03/30/203377-917048555_large.mp4" type="video/mp4" />
     Your browser does not support HTML5 video.
   </video>
 
@@ -112,14 +94,13 @@
     </div>
   </div>
 
-  <!-- JS to enable audio -->
+  <!-- Unmute audio once page is interacted -->
   <script>
-    function enableAudio() {
+    document.addEventListener('click', () => {
       const video = document.getElementById('bgVideo');
       video.muted = false;
       video.play();
-      document.querySelector('.play-btn').style.display = 'none';
-    }
+    }, { once: true });
   </script>
 
 </body>
