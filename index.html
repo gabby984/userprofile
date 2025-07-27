@@ -4,94 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gabby's Zone</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
-      font-family: 'Orbitron', sans-serif;
       overflow: hidden;
-      color: white;
-      background: #000;
-      animation: zoomIn 2s ease forwards;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #000;
+      color: #fff;
     }
 
-    @keyframes zoomIn {
-      from { transform: scale(1.1); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* ⚡ Background Animation */
-    body::before {
-      content: "";
-      position: absolute;
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #050505, #0a0a0a, #111);
-      background-size: 600% 600%;
-      animation: gradientShift 15s ease infinite;
-      z-index: -3;
+      z-index: -1;
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .video-bg iframe {
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
     }
 
-    /* ✨ Spark Particles */
-    body::after {
-      content: '';
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    .content {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(white 1px, transparent 1px);
-      background-size: 30px 30px;
-      animation: spark 40s linear infinite;
-      opacity: 0.05;
-      z-index: -2;
-    }
-
-    @keyframes spark {
-      0% { background-position: 0 0; }
-      100% { background-position: 1000px 1000px; }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
-      padding: 20px;
-    }
-
-    .avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 4px solid #fff;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-      margin-bottom: 20px;
-      animation: pulse 2.5s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); }
-      50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 255, 255, 0.6); }
+      z-index: 1;
     }
 
     .glitch {
-      font-size: 3.5em;
-      position: relative;
+      font-size: 3em;
       animation: glitch 2s infinite;
     }
 
@@ -104,12 +62,12 @@
     .typing {
       font-family: 'Roboto Mono', monospace;
       font-size: 18px;
-      margin-top: 10px;
+      margin-top: 15px;
       white-space: nowrap;
       overflow: hidden;
       border-right: 3px solid #fff;
       width: 0;
-      animation: typing 4s steps(40, end) forwards, blink 0.7s step-end infinite;
+      animation: typing 6s steps(40, end) forwards, blink 0.7s step-end infinite;
     }
 
     @keyframes typing {
@@ -123,40 +81,40 @@
 
     .btn {
       margin-top: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 14px 30px;
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 12px 24px;
       border-radius: 30px;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
-      color: #fff;
-      font-size: 16px;
-      border: 1px solid rgba(255,255,255,0.3);
-      transition: 0.4s ease;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+      transition: 0.3s;
+      backdrop-filter: blur(6px);
     }
 
     .btn:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(255,255,255,0.3);
-    }
-
-    @media screen and (max-width: 600px) {
-      .glitch { font-size: 2.2em; }
-      .typing { font-size: 14px; }
-      .avatar { width: 110px; height: 110px; }
-      .btn { padding: 10px 20px; font-size: 14px; }
+      background: rgba(255,255,255,0.4);
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <img class="avatar" src="https://images.pexels.com/photos/33146632/pexels-photo-33146632.jpeg" alt="Gabby">
+  <!-- 🎥 Background YouTube Video -->
+  <div class="video-bg">
+    <iframe src="https://www.youtube.com/embed/XALhH3roawA?autoplay=1&mute=1&controls=0&loop=1&playlist=XALhH3roawA&modestbranding=1&showinfo=0&rel=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="overlay"></div>
+
+  <!-- 👤 Content -->
+  <div class="content">
     <div class="glitch">Gabby 🌸</div>
-    <div class="typing">Comic Reader | Gamer | Cat Enthusiast</div>
-    <a class="btn" href="https://discord.com/invite/RFTmhV65" target="_blank">Join My Discord</a>
+    <div class="typing">Cute Coder | Gamer Girl | Comic Reader</div>
+    <a class="btn" href="https://discord.gg/RFTmhV65" target="_blank">💬 Join Gabby’s Discord</a>
   </div>
 
 </body>
