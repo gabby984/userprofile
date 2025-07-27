@@ -3,34 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gabby's DC Profile with Audio</title>
+  <title>Gabby's DC Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Fira+Code&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
       height: 100%;
-      background: #000;
       overflow: hidden;
+      background: #000;
       font-family: 'Orbitron', sans-serif;
       color: #fff;
     }
-    .bg-video {
+    .video-bg {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      object-fit: cover;
       z-index: -2;
+      pointer-events: none;
+    }
+    .video-bg iframe {
+      width: 100vw;
+      height: 100vh;
     }
     .overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.4);
       z-index: -1;
     }
     .profile {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       z-index: 1;
@@ -73,7 +82,8 @@
     }
     .play-btn {
       position: absolute;
-      top: 20px; left: 50%;
+      top: 20px;
+      left: 50%;
       transform: translateX(-50%);
       padding: 10px 20px;
       font-weight: bold;
@@ -89,33 +99,42 @@
 </head>
 <body>
 
-  <!-- Button to enable audio -->
-  <button class="play-btn" onclick="enableAudio()">🔊 Play Background</button>
+  <!-- 🔊 Play Sound Button -->
+  <button class="play-btn" onclick="allowSound()">🔊 Play Audio</button>
 
-  <!-- Background video element -->
-  <video id="bgVideo" class="bg-video" autoplay muted loop playsinline>
-    <source src="YOUR_VIDEO_URL_HERE.mp4" type="video/mp4">
-    Your browser doesn’t support HTML5 video.
-  </video>
+  <!-- 🎥 Video Background -->
+  <div class="video-bg">
+    <iframe id="bgVid"
+      src="https://www.youtube.com/embed/JIVp3erJDMo?autoplay=1&mute=1&controls=0&loop=1&playlist=JIVp3erJDMo&modestbranding=1&rel=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Overlay -->
   <div class="overlay"></div>
 
-  <!-- Profile info -->
+  <!-- 👤 Profile Info -->
   <div class="profile">
     <img class="avatar" src="https://images.pexels.com/photos/33146632/pexels-photo-33146632.jpeg" alt="Gabby Avatar">
-    <div class="username">Gabby</div>
-    <div class="tagline">Fast car vibes with gamer girl energy.</div>
+    <div class="username">Gabby#9847</div>
+    <div class="tagline">Living fast, gaming hard, chatting loud.</div>
     <div class="links">
       <a href="https://discord.com/invite/RFTmhV65" target="_blank">Join Discord</a>
     </div>
   </div>
 
+  <!-- JS to enable sound -->
   <script>
-    function enableAudio() {
-      const v = document.getElementById('bgVideo');
-      v.muted = false;
-      v.play();
+    function allowSound() {
+      const iframe = document.getElementById('bgVid');
+      const currentSrc = iframe.src;
+      const newSrc = currentSrc.replace("mute=1", "mute=0");
+      iframe.src = newSrc;
       document.querySelector('.play-btn').style.display = 'none';
     }
   </script>
+
 </body>
 </html>
