@@ -7,13 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Fira+Code&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
+    body, html {
       height: 100%;
-      background: #000;
       font-family: 'Orbitron', sans-serif;
       color: #fff;
       overflow: hidden;
+      background: #000;
     }
 
     video.bg {
@@ -30,9 +29,10 @@
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.6);
-      animation: pulseGlow 6s infinite ease-in-out;
+      background: rgba(0, 0, 0, 0.5);
       z-index: -2;
+      backdrop-filter: blur(4px);
+      animation: pulseGlow 6s infinite ease-in-out;
     }
 
     .profile {
@@ -40,110 +40,379 @@
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 2;
+      padding: 2rem;
+      border-radius: 20px;
+      animation: fadeIn 1.5s ease;
     }
 
     .avatar {
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      border: 3px solid #00ffff;
+      border: 4px solid #0ff;
       margin-bottom: 20px;
-      animation: floatIn 1.6s ease-out;
-      box-shadow: 0 0 12px #00ffff, 0 0 25px #00ffff80;
+      box-shadow: 0 0 15px #0ff, 0 0 35px #0ff88c;
+      transition: transform 0.3s;
     }
 
+    .avatar:hover { transform: scale(1.05); }
+
     .username {
-      font-size: 2.8em;
+      font-size: 3rem;
       color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-      margin-bottom: 10px;
-      animation: fadeInDown 2s ease;
+      text-shadow: 0 0 10px #0ff, 0 0 25px #0ff;
+      margin-bottom: 15px;
     }
 
     .tagline {
       font-family: 'Fira Code', monospace;
-      font-size: 18px;
-      color: #eee;
-      margin-bottom: 25px;
-      border-right: 2px solid #00ffff;
+      font-size: 1.2rem;
+      color: #ddd;
       white-space: nowrap;
       overflow: hidden;
       width: 0;
-      animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
+      border-right: 2px solid #00ffff;
+      margin: 0 auto 25px;
+      animation: typing 4s steps(40, end) forwards, blink 0.75s step-end infinite;
     }
 
     .links a {
       display: inline-block;
-      margin: 0 10px;
+      margin: 10px;
+      padding: 10px 24px;
       color: #00ffff;
       text-decoration: none;
-      border: 2px solid #00ffff;
-      padding: 8px 16px;
-      border-radius: 25px;
-      transition: all 0.3s ease;
       font-weight: bold;
-      backdrop-filter: blur(5px);
-      animation: fadeIn 2.8s ease;
+      border: 2px solid #00ffff;
+      border-radius: 30px;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #00ffff55;
     }
 
     .links a:hover {
       background: #00ffff;
       color: #000;
-      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
     }
 
-    /* Animations */
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    #gamesSection {
+      display: none;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 900px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 2px solid #0ff;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+      color: #0ff;
     }
 
-    @keyframes floatIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
+    .tab-buttons button {
+      background: transparent;
+      border: 2px solid #0ff;
+      color: #0ff;
+      margin: 5px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .tab-buttons button:hover,
+    .tab-buttons button.active {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 15px #0ff;
+    }
+
+    .game-tab { display: none; margin-top: 20px; }
+    .game-tab.active { display: block; }
+
+    .game-area {
+      width: 100%;
+      height: 300px;
+      background: #111;
+      border: 2px dashed #0ff;
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 30px;
+      height: 30px;
+      background: #0ff;
+      border-radius: 50%;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      cursor: pointer;
+      animation: pulseGlow 1s infinite;
+    }
+
+    canvas {
+      border-radius: 10px;
     }
 
     @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
+      from { width: 0; }
+      to { width: 100%; }
     }
 
     @keyframes blink {
-      0%, 100% { border-color: transparent }
-      50% { border-color: #00ffff }
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #00ffff; }
     }
 
     @keyframes pulseGlow {
-      0% { box-shadow: 0 0 20px #00ffff44; }
-      50% { box-shadow: 0 0 40px #00ffffaa; }
-      100% { box-shadow: 0 0 20px #00ffff44; }
+      0%, 100% { box-shadow: 0 0 10px #0ff; }
+      50% { box-shadow: 0 0 20px #0ff; }
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 500px) {
+      .username { font-size: 2rem; }
+      .avatar { width: 110px; height: 110px; }
+      .tagline { font-size: 1rem; }
+      #gamesSection { top: 5%; }
     }
   </style>
 </head>
 <body>
-
-  <!-- 🎥 Video Background -->
   <video class="bg" autoplay muted loop playsinline>
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-speeding-down-a-highway-at-night-1231-large.mp4" type="video/mp4" />
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-speeding-down-a-highway-at-night-1231-large.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
+
   <div class="overlay"></div>
 
-  <!-- 👤 Profile Info -->
   <div class="profile">
-    <img src="https://images.pexels.com/photos/33146632/pexels-photo-33146632.jpeg" class="avatar" alt="Gabby Avatar" />
+    <img src="https://images.pexels.com/photos/33146632/pexels-photo-33146632.jpeg" alt="Gabby" class="avatar" />
     <div class="username">Gabby</div>
     <div class="tagline">Speed. Style. Status. This is Gabby</div>
     <div class="links">
       <a href="https://discord.com/invite/RFTmhV65" target="_blank">Join Discord</a>
+      <a href="#" onclick="toggleGames()">🎮 Games</a>
     </div>
   </div>
 
+  <div id="gamesSection">
+    <div class="tab-buttons">
+      <button onclick="showGame('dot')" class="active">Catch the Dot</button>
+      <button onclick="showGame('memory')">Memory Match</button>
+      <button onclick="showGame('rps')">Rock Paper Scissors</button>
+      <button onclick="showGame('snake')">Snake</button>
+      <button onclick="showGame('guess')">Click Tracker</button>
+    </div>
+
+    <div class="game-tab active" id="dot">
+      <p>Click the dot to score!</p>
+      <div class="game-area" onclick="moveDot(event)">
+        <div class="dot" onclick="score(event)"></div>
+      </div>
+      <p id="scoreDisplay">Score: 0</p>
+    </div>
+
+    <div class="game-tab" id="memory">
+      <p>Find the matching pair!</p>
+      <div style="display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; justify-content: center;">
+        <button onclick="flipCard(this)">A</button><button onclick="flipCard(this)">B</button>
+        <button onclick="flipCard(this)">A</button><button onclick="flipCard(this)">B</button>
+        <button onclick="flipCard(this)">C</button><button onclick="flipCard(this)">C</button>
+        <button onclick="flipCard(this)">D</button><button onclick="flipCard(this)">D</button>
+      </div>
+    </div>
+
+    <div class="game-tab" id="rps">
+      <p>Choose Rock, Paper, or Scissors!</p>
+      <button onclick="playRPS('rock')">🪨 Rock</button>
+      <button onclick="playRPS('paper')">📄 Paper</button>
+      <button onclick="playRPS('scissors')">✂️ Scissors</button>
+      <p id="rpsResult">Your move?</p>
+    </div>
+
+    <div class="game-tab" id="snake">
+      <canvas id="snakeCanvas" width="300" height="300" style="background: #111; border: 2px solid #0ff;"></canvas>
+    </div>
+
+    <div class="game-tab" id="guess">
+      <p>Click as many times as you can in 5 seconds!</p>
+      <button onclick="startClickGame()" id="clickBtn">Start Clicking</button>
+      <p id="clickScore">Clicks: 0</p>
+    </div>
+  </div>
+
+  <script>
+    let scoreValue = 0;
+
+    function toggleGames() {
+      const section = document.getElementById('gamesSection');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function score(e) {
+      e.stopPropagation();
+      scoreValue++;
+      document.getElementById('scoreDisplay').innerText = "Score: " + scoreValue;
+      moveDot();
+    }
+
+    function moveDot() {
+      const dot = document.querySelector('.dot');
+      const area = document.querySelector('.game-area');
+      const maxX = area.clientWidth - 30;
+      const maxY = area.clientHeight - 30;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      dot.style.left = x + 'px';
+      dot.style.top = y + 'px';
+    }
+
+    function showGame(id) {
+      document.querySelectorAll('.game-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    let firstCard = null;
+    function flipCard(btn) {
+      if (btn.disabled) return;
+      if (!firstCard) {
+        firstCard = btn;
+        btn.style.background = '#0ff';
+      } else {
+        btn.style.background = '#0ff';
+        if (btn.innerText === firstCard.innerText && btn !== firstCard) {
+          btn.disabled = true;
+          firstCard.disabled = true;
+        } else {
+          setTimeout(() => {
+            btn.style.background = '';
+            firstCard.style.background = '';
+          }, 600);
+        }
+        firstCard = null;
+      }
+    }
+
+    function playRPS(player) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const ai = choices[Math.floor(Math.random() * 3)];
+      let result = '';
+
+      if (player === ai) result = 'Draw!';
+      else if (
+        (player === 'rock' && ai === 'scissors') ||
+        (player === 'paper' && ai === 'rock') ||
+        (player === 'scissors' && ai === 'paper')
+      ) result = 'You Win!';
+      else result = 'You Lose!';
+
+      document.getElementById('rpsResult').innerText = `You chose ${player}, AI chose ${ai}. ${result}`;
+    }
+
+    // Snake Game
+    const canvas = document.getElementById("snakeCanvas");
+    const ctx = canvas.getContext("2d");
+    const box = 20;
+    let snake = [{ x: 9 * box, y: 9 * box }];
+    let food = {
+      x: Math.floor(Math.random() * 15 + 1) * box,
+      y: Math.floor(Math.random() * 15 + 1) * box
+    };
+    let dir = null;
+
+    document.addEventListener("keydown", direction);
+    function direction(e) {
+      if (e.key === "ArrowLeft" && dir !== "RIGHT") dir = "LEFT";
+      else if (e.key === "ArrowUp" && dir !== "DOWN") dir = "UP";
+      else if (e.key === "ArrowRight" && dir !== "LEFT") dir = "RIGHT";
+      else if (e.key === "ArrowDown" && dir !== "UP") dir = "DOWN";
+    }
+
+    function drawSnakeGame() {
+      ctx.fillStyle = "#111";
+      ctx.fillRect(0, 0, 300, 300);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? "#0ff" : "#0ff88c";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = "#f00";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let headX = snake[0].x;
+      let headY = snake[0].y;
+
+      if (dir === "LEFT") headX -= box;
+      if (dir === "RIGHT") headX += box;
+      if (dir === "UP") headY -= box;
+      if (dir === "DOWN") headY += box;
+
+      if (
+        headX < 0 || headX >= 300 || headY < 0 || headY >= 300 ||
+        snake.some((segment, i) => i !== 0 && segment.x === headX && segment.y === headY)
+      ) {
+        clearInterval(snakeGame);
+        alert("Game Over!");
+        return location.reload();
+      }
+
+      let newHead = { x: headX, y: headY };
+
+      if (headX === food.x && headY === food.y) {
+        food = {
+          x: Math.floor(Math.random() * 15 + 1) * box,
+          y: Math.floor(Math.random() * 15 + 1) * box
+        };
+      } else {
+        snake.pop();
+      }
+
+      snake.unshift(newHead);
+    }
+
+    let snakeGame = setInterval(drawSnakeGame, 150);
+
+    // Click Tracker Game
+    let clickCount = 0;
+    let gameRunning = false;
+    function startClickGame() {
+      if (gameRunning) return;
+      gameRunning = true;
+      clickCount = 0;
+      document.getElementById("clickScore").innerText = "Clicks: 0";
+
+      const btn = document.getElementById("clickBtn");
+      btn.innerText = "Click Me!";
+      btn.onclick = () => {
+        if (gameRunning) {
+          clickCount++;
+          document.getElementById("clickScore").innerText = "Clicks: " + clickCount;
+        }
+      };
+
+      setTimeout(() => {
+        gameRunning = false;
+        btn.innerText = "Start Clicking";
+        btn.onclick = startClickGame;
+        alert("Time's up! You clicked " + clickCount + " times.");
+      }, 5000);
+    }
+  </script>
 </body>
 </html>
